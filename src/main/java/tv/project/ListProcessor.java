@@ -28,7 +28,6 @@ public class ListProcessor {
     Scanner input = new Scanner(System.in);
     int listLength;
     ArrayList<Integer> list = new ArrayList<>();
-    System.out.print("Get length: ");
     listLength = input.nextInt();
     while (!this.isValidLength(listLength)) {
       System.out.print("Wrong value! Length must be in (0,100] ");
@@ -36,7 +35,6 @@ public class ListProcessor {
     }
     for (int i=0; i < listLength; i++) {
       int tempNumber;
-      System.out.print("Number on position " + (i + 1) + " ");
       tempNumber = input.nextInt();
       while (!this.isValidNumber(tempNumber)) {
         System.out.print("Wrong value! Number must have min 1 digit and max 7 ");
