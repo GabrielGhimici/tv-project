@@ -27,7 +27,6 @@ public class ListProcessorFunctionalTest {
     this.processor = new ListProcessor();
   }
 
-  //equivalence partitioning && boundary values
   @Test
   public void processListLengthNegative() {
     systemInMock.provideLines("-1", "1", "1");
