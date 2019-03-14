@@ -62,7 +62,7 @@ public class ListProcessor {
   }
 
   public int processListElement(int element) {
-    int elementLength = this.elemLength(element);
+    int elementLength = Number.length(element);
     if (elementLength == 1 || elementLength == 2) {
       return 0;
     } else {
@@ -71,7 +71,7 @@ public class ListProcessor {
   }
 
   public int removeData(int element) {
-    int elementLength = this.elemLength(element);
+    int elementLength = Number.length(element);
     int halfLength;
     if (elementLength % 2 == 0) {
       halfLength = elementLength/2 - 1;
@@ -84,18 +84,9 @@ public class ListProcessor {
 
   public int calculateHalf(int number, int halfLength, boolean isFirst) {
     if (isFirst) {
-      return number / (int) Math.pow(10, this.elemLength(number) - halfLength);
+      return number / (int) Math.pow(10, Number.length(number) - halfLength);
     } else {
       return number % (int) Math.pow(10, halfLength);
     }
-  }
-
-  public int elemLength(int element) {
-    int length = 1;
-    while (element/10 != 0) {
-      length++;
-      element = element/10;
-    }
-    return length;
   }
 }
