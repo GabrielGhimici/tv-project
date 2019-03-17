@@ -28,6 +28,44 @@ public class ListProcessorFunctionalTest {
   }
 
   @Test
+  public void processValidListWithEvenNumberLength() {
+    systemInMock.provideLines("2", "1234", "5435");
+    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
+    assertEquals(14, parsedList.get(0).intValue());
+    assertEquals(55, parsedList.get(1).intValue());
+  }
+
+  @Test
+  public void processValidListWithOddNumberLength() {
+    systemInMock.provideLines("2", "12334", "54357");
+    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
+    assertEquals(1234, parsedList.get(0).intValue());
+    assertEquals(5457, parsedList.get(1).intValue());
+  }
+
+  @Test
+  public void processValidListWithSmallNumberLength() {
+    systemInMock.provideLines("2", "1", "57");
+    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
+    assertEquals(0, parsedList.get(0).intValue());
+    assertEquals(0, parsedList.get(1).intValue());
+  }
+
+  @Test
+  public void processListNegativeNumber() {
+    systemInMock.provideLines("1", "-13", "1");
+    this.processor.readData();
+    assertTrue(this.systemOutRule.getLog().contains("Wrong value! Number must have min 1 digit and max 7"));
+  }
+
+  @Test
+  public void processListNumberLengthGreaterThan7() {
+    systemInMock.provideLines("1", "123456789", "1");
+    this.processor.readData();
+    assertTrue(this.systemOutRule.getLog().contains("Wrong value! Number must have min 1 digit and max 7"));
+  }
+
+  @Test
   public void processListLengthNegative() {
     systemInMock.provideLines("-1", "1", "1");
     this.processor.readData();
@@ -36,7 +74,7 @@ public class ListProcessorFunctionalTest {
 
   @Test
   public void processListLengthGreaterThan100() {
-    systemInMock.provideLines("101", "1", "1");
+    systemInMock.provideLines("110", "1", "1");
     this.processor.readData();
     assertTrue(this.systemOutRule.getLog().contains("Wrong value! Length must be in (0,100]"));
   }
@@ -48,17 +86,24 @@ public class ListProcessorFunctionalTest {
   }
 
   @Test
-  public void processListNegativeNumber() {
-    systemInMock.provideLines("2", "-1", "1", "2");
+  public void processEmptyList() {
+    systemInMock.provideLines("0", "1", "1");
     this.processor.readData();
-    assertTrue(this.systemOutRule.getLog().contains("Wrong value! Number must have min 1 digit and max 7"));
+    assertTrue(this.systemOutRule.getLog().contains("Wrong value! Length must be in (0,100]"));
   }
 
   @Test
-  public void processListNumberLengthGreaterThan7() {
-    systemInMock.provideLines("2", "12345678", "1", "2");
+  public void processValidListWithMoreThanMaxNumberOfElements() {
+    systemInMock.provideLines("101", "1", "1");
     this.processor.readData();
-    assertTrue(this.systemOutRule.getLog().contains("Wrong value! Number must have min 1 digit and max 7"));
+    assertTrue(this.systemOutRule.getLog().contains("Wrong value! Length must be in (0,100]"));
+  }
+
+  @Test
+  public void processValidListWithOneElement() {
+    systemInMock.provideLines("1", "123");
+    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
+    assertEquals(13, parsedList.get(0).intValue());
   }
 
   @Test
@@ -77,29 +122,6 @@ public class ListProcessorFunctionalTest {
   }
 
   @Test
-  public void processValidListWithOneElement() {
-    systemInMock.provideLines("1", "1");
-    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
-    assertEquals(0, parsedList.get(0).intValue());
-  }
-
-  @Test
-  public void processValidListWithEvenNumberLength() {
-    systemInMock.provideLines("2", "1234", "5435");
-    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
-    assertEquals(14, parsedList.get(0).intValue());
-    assertEquals(55, parsedList.get(1).intValue());
-  }
-
-  @Test
-  public void processValidListWithOddNumberLength() {
-    systemInMock.provideLines("2", "12334", "54357");
-    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
-    assertEquals(1234, parsedList.get(0).intValue());
-    assertEquals(5457, parsedList.get(1).intValue());
-  }
-
-  @Test
   public void processValidListWithMaxNumberLength() {
     systemInMock.provideLines("2", "9999999", "9999999");
     ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
@@ -107,13 +129,24 @@ public class ListProcessorFunctionalTest {
     assertEquals(999999, parsedList.get(1).intValue());
   }
 
-
   @Test
-  public void processValidListWithSmallNumberLength() {
-    systemInMock.provideLines("2", "1", "57");
-    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
-    assertEquals(0, parsedList.get(0).intValue());
-    assertEquals(0, parsedList.get(1).intValue());
+  public void processListNumberLengthGreaterThan7AtLimit() {
+    systemInMock.provideLines("1", "100000000", "1");
+    this.processor.readData();
+    assertTrue(this.systemOutRule.getLog().contains("Wrong value! Number must have min 1 digit and max 7"));
   }
 
+  @Test
+  public void processListNumberLength1InferiorLimit() {
+    systemInMock.provideLines("1", "0");
+    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
+    assertEquals(0, parsedList.get(0).intValue());
+  }
+  @Test
+
+  public void processListNumberLength1SuperiorLimit() {
+    systemInMock.provideLines("1", "-1", "1");
+    this.processor.readData();
+    assertTrue(this.systemOutRule.getLog().contains("Wrong value! Number must have min 1 digit and max 7"));
+  }
 }

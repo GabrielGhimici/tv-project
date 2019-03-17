@@ -40,6 +40,9 @@
           <targetTests>
             <parm>tv.project.test.*</parm>
           </targetTests>
+          <excludedMethods>
+            <parm>process</parm>
+          </excludedMethods>
         </configuration>
       </plugin>
       <plugin>

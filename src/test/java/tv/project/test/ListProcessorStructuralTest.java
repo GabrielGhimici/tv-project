@@ -32,18 +32,8 @@ public class ListProcessorStructuralTest {
   }
 
   @Test
-  public void verifyLengthValidity1Length() {
-    assertTrue(this.processor.isValidLength(1));
-  }
-
-  @Test
   public void verifyLengthValidityGreaterThan1Length() {
-    assertTrue(this.processor.isValidLength(34));
-  }
-
-  @Test
-  public void verifyLengthValidity100Length() {
-    assertTrue(this.processor.isValidLength(100));
+    assertTrue(this.processor.isValidLength(5));
   }
 
   @Test
@@ -68,7 +58,7 @@ public class ListProcessorStructuralTest {
 
   @Test
   public void verifyElementLengthValidityGreaterThan1Length() {
-    assertTrue(this.processor.isValidNumber(12345));
+    assertTrue(this.processor.isValidNumber(1234));
   }
 
   @Test
@@ -99,21 +89,34 @@ public class ListProcessorStructuralTest {
 
   @Test
   public void process1LengthNumber() {
-    assertEquals(0, this.processor.processListElement(1));
+    assertEquals(0, this.processor.processListElement(0));
   }
 
   @Test
   public void process2LengthNumber() {
-    assertEquals(0, this.processor.processListElement(88));
+    assertEquals(0, this.processor.processListElement(10));
   }
 
   @Test
   public void processGreaterThan2LengthNumberEL() {
-    assertEquals(15, this.processor.processListElement(1235));
+    assertEquals(14, this.processor.processListElement(1234));
   }
 
   @Test
   public void processGreaterThan2LengthNumberOL() {
-    assertEquals(1245, this.processor.processListElement(12345));
+    assertEquals(1298, this.processor.processListElement(12398));
+  }
+
+  @Test
+  public void pathCoverage() {
+    systemInMock.provideLines("-1", "4", "1234", "12345789", "12345", "-1", "1", "12");
+    ArrayList<Integer> parsedList = this.processor.processList(this.processor.readData().getValue());
+    assertTrue(this.systemOutRule.getLog().contains("Wrong value! Length must be in (0,100]"));
+    assertTrue(this.systemOutRule.getLog()
+      .contains("Wrong value! Number must have min 1 digit and max 7 Wrong value! Number must have min 1 digit and max 7"));
+    assertEquals(14, parsedList.get(0).intValue());
+    assertEquals(1245, parsedList.get(1).intValue());
+    assertEquals(0, parsedList.get(2).intValue());
+    assertEquals(0, parsedList.get(3).intValue());
   }
 }
