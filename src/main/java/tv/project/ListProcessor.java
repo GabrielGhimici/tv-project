@@ -8,7 +8,9 @@ import java.util.Scanner;
 
 @SuppressWarnings("WeakerAccess")
 public class ListProcessor {
-  public ListProcessor() {}
+  public ListProcessor() {
+
+  }
   public void process() {
     try {
       Pair<Integer, ArrayList<Integer>> data = this.readData();
